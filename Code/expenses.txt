@@ -1,0 +1,4 @@
+big fat burger,44.0,Food,2026-06-05
+gas,7.0,Transport,2026-06-08
+i dont know,3.9,Food,2026-06-07
+something something,88.53,Bills,2026-06-03
