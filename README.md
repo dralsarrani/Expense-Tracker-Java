@@ -13,3 +13,9 @@ Simple console app to track personal expenses.
 ```bash
 javac Main.java
 java Main
+```
+
+## Sample Output
+<p align="center">
+  <img src="simple_output.png" width="300">
+</p>
