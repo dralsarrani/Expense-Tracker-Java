@@ -1,25 +1,24 @@
 import java.util.*;
-import java.io.*;
 
 public class ExpenseManager {
     private ArrayList<Expense> expenses;
-    private final String FILE_NAME = "expenses.txt";
+    private DatabaseManager db;
 
-    // Constructor - loads existing expenses when program starts
     public ExpenseManager() {
-        expenses = new ArrayList<>();
-        loadFromFile();
+        db = new DatabaseManager();
+        expenses = db.getAllExpenses(); // Load from database
     }
 
-    // Add a new expense
     public void addExpense(String description, double amount, String category, String date) {
         Expense newExpense = new Expense(description, amount, category, date);
+        int id = db.addExpense(newExpense);  // Gets ID from DB
+        
+        // The expense is already in the map (inside DatabaseManager)
+        // We just need it in our local list too
         expenses.add(newExpense);
-        saveToFile(); // Save immediately after adding
-        System.out.println("✓ Expense added!");
+        System.out.println("✓ Expense added! (ID: " + id + ")");
     }
 
-    // Show all expenses
     public void viewAllExpenses() {
         if (expenses.isEmpty()) {
             System.out.println("No expenses yet.");
@@ -32,25 +31,31 @@ public class ExpenseManager {
         }
     }
 
-    public void deleteExpense() {
-        if (expenses.isEmpty()) {
-            System.out.println("No expenses to delete.");
-            return;
+    public void showTotalByCategory() {
+        db.showTotalsByCategory(); 
+    }
+
+    public void showGrandTotal() {
+        double total = 0;
+        for (Expense e : expenses) {
+            total += e.getAmount();
         }
+        //System.out.printf("\nGrand Total: $%.2f%n", total);
+        System.out.println("\nGrand Total: " + total);
+    }
 
-        viewAllExpenses(); // Show numbered list first
+    public int getExpenseCount() {
+        return expenses.size();
+    }
 
-        System.out.print("Enter expense number to delete: ");
-        Scanner scanner = new Scanner(System.in);
-        int index = scanner.nextInt();
-        scanner.nextLine(); // Clear buffer
-
+    // uses the Expense object directly
+    public void deleteExpense(int index) {
         if (index >= 1 && index <= expenses.size()) {
-            Expense removed = expenses.remove(index - 1); // Convert to 0-based index
-            saveToFile(); // Save changes to file
-            System.out.println("✓ Deleted: " + removed.getDescription() + " - $" + removed.getAmount());
+            Expense toDelete = expenses.remove(index - 1);
+            db.deleteExpense(toDelete);  // Pass the object
+            System.out.println("✓ Deleted: " + toDelete.getDescription());
         } else {
-            System.out.println("Invalid number. No expense deleted.");
+            System.out.println("Invalid number.");
         }
     }
 
@@ -58,69 +63,7 @@ public class ExpenseManager {
         return expenses.isEmpty();
     }
 
-    // Show total by category
-    public void showTotalByCategory() {
-        if (expenses.isEmpty()) {
-            System.out.println("No expenses to total.");
-            return;
-        }
-
-        HashMap<String, Double> categoryTotals = new HashMap<>();
-
-        for (Expense e : expenses) {
-            String cat = e.getCategory();
-            double currentTotal = categoryTotals.getOrDefault(cat, 0.0);
-            categoryTotals.put(cat, currentTotal + e.getAmount());
-        }
-
-        System.out.println("\n--- TOTALS BY CATEGORY ---");
-        for (String category : categoryTotals.keySet()) {
-            double total = categoryTotals.get(category);
-            System.out.println(category + ": " + total);
-        }
-    }
-
-    // Show grand total
-    public void showGrandTotal() {
-        double total = 0;
-        for (Expense e : expenses) {
-            total += e.getAmount();
-        }
-        System.out.println("\nGrand Total: " + total);
-    }
-
-    // Save to file
-    private void saveToFile() {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_NAME))) {
-            for (Expense e : expenses) {
-                writer.println(e.toFileString());
-            }
-        } catch (IOException e) {
-            System.out.println("Error saving: " + e.getMessage());
-        }
-    }
-
-    // Load from file
-    private void loadFromFile() {
-        File file = new File(FILE_NAME);
-        if (!file.exists()) {
-            return; // First time running, no file yet
-        }
-
-        try (Scanner fileScanner = new Scanner(file)) {
-            while (fileScanner.hasNextLine()) {
-                String line = fileScanner.nextLine();
-                String[] parts = line.split(",");
-                if (parts.length == 4) {
-                    String desc = parts[0];
-                    double amount = Double.parseDouble(parts[1]);
-                    String category = parts[2];
-                    String date = parts[3];
-                    expenses.add(new Expense(desc, amount, category, date));
-                }
-            }
-        } catch (IOException | NumberFormatException e) {
-            System.out.println("Error loading: " + e.getMessage());
-        }
+    public void close() {
+        db.close();
     }
 }

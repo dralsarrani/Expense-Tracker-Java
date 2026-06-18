@@ -1,42 +1,65 @@
 public class Expense {
+    private int id;
     private String description;
     private double amount;
     private String category;
     private String date;
-    
-    // Constructor
-    public Expense(String description, double amount, String category, String date) {
-    this.description = description;
-    this.amount = amount;
-    this.category = category;
-    this.date = date;
+
+    public Expense(int id, String description, double amount, String category, String date) {
+        this.id = id;
+        this.description = description;
+        this.amount = amount;
+        this.category = category;
+        this.date = date;
     }
-    
-    // Getters (you need these to access private fields)
+
+    public Expense(String description, double amount, String category, String date) {
+        this.description = description;
+        this.amount = amount;
+        this.category = category;
+        this.date = date;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getDescription() {
         return description;
     }
-    
+
     public double getAmount() {
         return amount;
     }
-    
+
     public String getCategory() {
         return category;
     }
 
     public String getDate() {
-    return date;
-}
-    
-    // For saving to file (we'll use this later)
-    public String toFileString() {
-        return description + "," + amount + "," + category + "," + date; }
-    
-    // For displaying to user
+        return date;
+    }
+
     @Override
     public String toString() {
-        return description + " - $" + amount + " (" + category + ") on " + date;
+        return description + " - " + amount + " (" + category + ") on " + date;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+
+        Expense expense = (Expense) obj;
+        return Double.compare(expense.amount, amount) == 0 &&
+                description.equals(expense.description) &&
+                category.equals(expense.category) &&
+                date.equals(expense.date);
     }
 }
-

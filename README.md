@@ -1,18 +1,21 @@
-# Expense Tracker (Java)
+markdown
+# Expense Tracker (Java + SQLite)
 
-Simple console app to track personal expenses.
+Expense tracker with database persistence using SQLite.
 
 ## Features
-- Add expenses with description, amount, category, date
-- View all expenses
-- View totals by category
-- Grand total calculation
-- Automatic save/load from file
+- Add/view/delete expenses
+- Category totals
+- Grand total
+- Persistent SQLite database
 
 ## How to run
 ```bash
-javac Main.java
-java Main
+## Setup
+1. Download sqlite-jdbc-3.47.0.0.jar from https://github.com/xerial/sqlite-jdbc/releases
+2. Place it in the `lib/` folder
+3. Compile: `javac -cp ".;lib/sqlite-jdbc-3.47.0.0.jar" *.java`
+4. Run: `java -cp ".;lib/sqlite-jdbc-3.47.0.0.jar" Main`
 ```
 
 ## Sample Output

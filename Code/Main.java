@@ -57,8 +57,15 @@ public class Main {
                     break;
 
                 case 5:
-                    // Delete expense
-                    manager.deleteExpense();
+                    if (manager.hasNoExpenses()) {
+                        System.out.println("No expenses to delete.");
+                    } else {
+                        manager.viewAllExpenses();
+                        System.out.print("Enter expense number to delete: ");
+                        int deleteIndex = scanner.nextInt();
+                        scanner.nextLine();
+                        manager.deleteExpense(deleteIndex); 
+                    }
                     break;
 
                 case 6:
@@ -72,5 +79,6 @@ public class Main {
         } while (choice != 6);
 
         scanner.close();
+        manager.close(); // Close database connection
     }
 }
