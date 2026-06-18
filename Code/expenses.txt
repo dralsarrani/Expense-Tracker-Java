@@ -1,2 +1,0 @@
-gas,7.0,Transport,2026-06-08
-something something,88.53,Bills,2026-06-03
