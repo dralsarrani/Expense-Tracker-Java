@@ -1,0 +1,22 @@
+README.md
+  h_27e7bc9c84bbc1 1-2,4,7-8,10,14-18
+Code/Main.java
+  h_27e7bc9c84bbc1 60-68,82
+Code/Expense.java
+  h_27e7bc9c84bbc1 2,7-9,15,17-24,26-30,34,38,46,49,52-64
+Code/DatabaseManager.java
+  h_27e7bc9c84bbc1 1-163
+Code/ExpenseManager.java
+  h_27e7bc9c84bbc1 5,8-9,14-17,19,35,43,47-48,51-58,62-67
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "361923323b61ccf4b7d329fbe348feb7d686a7f2",
+  "prompts": {},
+  "humans": {
+    "h_27e7bc9c84bbc1": {
+      "author": "dralsarrani <danahrakan@outlook.com>"
+    }
+  }
+}
